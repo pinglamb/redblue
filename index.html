@@ -40,11 +40,9 @@
       });
       body.on('press', function() {
         if(body.hasClass("red")) {
-          alert("hello")
-          $("#red-color").click();
+          $("#red-color")[0].click();
         } else {
-          alert("hello")
-          $("#blue-color").click();
+          $("#blue-color")[0].click();
         }
       });
 

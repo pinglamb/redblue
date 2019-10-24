@@ -14,22 +14,30 @@
       }
     </style>
 
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
   </head>
   <body>
     <input id="blue-color" type="color" style="display: none;" />
     <input id="red-color" type="color" style="display: none;" />
 
     <script>
-      window.conf = false;
-
       var body = $("body")
       var blue = window.localStorage.getItem("blue") || "#0000FF";
       var red  = window.localStorage.getItem("red")  || "#FF0000";
 
+      var startTime, endTime, longpress;
+
       body.on('click', function() {
-        if(!window.conf) {
+        if(longpress) {
+          if(body.hasClass("red")) {
+            $("#red-color").click();
+          } else {
+            $("#blue-color").click();
+          }
+        } else {
           body.toggleClass("red");
 
           if(body.hasClass("red")) {
@@ -39,19 +47,17 @@
           }
         }
       });
-      body.on('vmousedown', function() {
-        window.conf = false;
+      body.on('mousedown', function() {
+        longpress = false;
+        startTime = new Date().getTime();
       });
-      body.on('taphold', function() {
-        window.conf = true;
-        if(body.hasClass("red")) {
-          $("#red-color").click();
-        } else {
-          $("#blue-color").click();
-        }
+      body.on('mouseup', function() {
+        endTime = new Date().getTime();
+        longpress = (endTime - startTime > 500) ? true : false;
       });
 
       $("#blue-color").on('change', function(e) {
+        e.stopPropagation();
         var v = $("#blue-color")[0].value
         console.log(v)
         window.localStorage.setItem("blue", v);
@@ -65,6 +71,13 @@
         window.localStorage.setItem("red", v);
         red = v
         body.css("background-color", v);
+      });
+
+      $("#blue-color").on('click', function(e) {
+        e.stopPropagation();
+      });
+      $("#red-color").on('click', function(e) {
+        e.stopPropagation();
       });
 
       $(document).ready(function() {

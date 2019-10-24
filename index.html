@@ -2,29 +2,74 @@
   <head>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.min.js"
-      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"></script>
-<style>
-body {
-  width: 100%;
-  height: 100%;
-  background-color: blue;
-  margin: 0;
-  padding: 0;
-}
-  .red {
-    background-color: red !important;
-  }
-</style>
+
+    <style>
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .red {
+      }
+    </style>
+
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
   </head>
   <body>
+    <input id="blue-color" type="color" style="display: none;" />
+    <input id="red-color" type="color" style="display: none;" />
+
     <script>
-      $("body").on('click', function() {
-        $("body").toggleClass("red")
+      window.conf = false;
+
+      var body = $("body")
+      var blue = window.localStorage.getItem("blue") || "#0000FF";
+      var red  = window.localStorage.getItem("red")  || "#FF0000";
+
+      body.on('click', function() {
+        if(!window.conf) {
+          body.toggleClass("red");
+
+          if(body.hasClass("red")) {
+            body.css("background-color", red)
+          } else {
+            body.css("background-color", blue)
+          }
+        }
+      });
+      body.on('vmousedown', function() {
+        window.conf = false;
+      });
+      body.on('taphold', function() {
+        window.conf = true;
+        if(body.hasClass("red")) {
+          $("#red-color").click();
+        } else {
+          $("#blue-color").click();
+        }
+      });
+
+      $("#blue-color").on('change', function(e) {
+        var v = $("#blue-color")[0].value
+        console.log(v)
+        window.localStorage.setItem("blue", v);
+        blue = v
+        body.css("background-color", v);
+      });
+
+      $("#red-color").on('change', function(e) {
+        var v = $("#red-color")[0].value
+        console.log(v)
+        window.localStorage.setItem("red", v);
+        red = v
+        body.css("background-color", v);
+      });
+
+      $(document).ready(function() {
+        body.css("background-color", blue)
       });
     </script>
-    <input type="color" />
   </body>
 </html>

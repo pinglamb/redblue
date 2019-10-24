@@ -12,6 +12,15 @@
       }
       .red {
       }
+
+      input {
+        border:none;
+        background-image:none;
+        background-color:transparent;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
     </style>
 
     <script
@@ -72,6 +81,8 @@
 
       $(document).ready(function() {
         body.css("background-color", blue)
+        $("#blue-color").val(blue);
+        $("#red-color").val(red);
       });
     </script>
   </body>

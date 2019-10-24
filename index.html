@@ -18,6 +18,7 @@
       src="https://code.jquery.com/jquery-3.4.1.min.js"
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
       crossorigin="anonymous"></script>
+    <script src="//rawgit.com/ngryman/jquery.finger/v0.1.2/dist/jquery.finger.js"></script>
   </head>
   <body>
     <input id="blue-color" type="color" style="display: none;" />
@@ -28,34 +29,21 @@
       var blue = window.localStorage.getItem("blue") || "#0000FF";
       var red  = window.localStorage.getItem("red")  || "#FF0000";
 
-      var startTime, endTime, longpress;
+      body.on('tap', function() {
+        body.toggleClass("red");
 
-      body.on('click', function() {
-        if(longpress) {
-          if(body.hasClass("red")) {
-            alert("red")
-            $("#red-color").click();
-          } else {
-            alert("blue")
-            $("#blue-color").click();
-          }
+        if(body.hasClass("red")) {
+          body.css("background-color", red)
         } else {
-          body.toggleClass("red");
-
-          if(body.hasClass("red")) {
-            body.css("background-color", red)
-          } else {
-            body.css("background-color", blue)
-          }
+          body.css("background-color", blue)
         }
       });
-      body.on('mousedown', function() {
-        longpress = false;
-        startTime = new Date().getTime();
-      });
-      body.on('mouseup', function() {
-        endTime = new Date().getTime();
-        longpress = (endTime - startTime > 500) ? true : false;
+      body.on('press', function() {
+        if(body.hasClass("red")) {
+          $("#red-color").click();
+        } else {
+          $("#blue-color").click();
+        }
       });
 
       $("#blue-color").on('change', function(e) {

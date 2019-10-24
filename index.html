@@ -33,8 +33,10 @@
       body.on('click', function() {
         if(longpress) {
           if(body.hasClass("red")) {
+            alert("red")
             $("#red-color").click();
           } else {
+            alert("blue")
             $("#blue-color").click();
           }
         } else {
